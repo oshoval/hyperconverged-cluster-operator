@@ -795,6 +795,7 @@ rules:
   - networks
   verbs:
   - list
+  - watch
 - apiGroups:
   - security.openshift.io
   resources:
@@ -887,6 +888,7 @@ rules:
   - infrastructures
   verbs:
   - list
+  - watch
 - apiGroups:
   - ""
   resources:
