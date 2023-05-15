@@ -882,6 +882,7 @@ rules:
   - get
   - create
   - update
+  - delete
 - apiGroups:
   - config.openshift.io
   resources:
@@ -1007,6 +1008,12 @@ rules:
   - get
   - list
   - watch
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - delete
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
