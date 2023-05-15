@@ -153,7 +153,7 @@ echo "Creating resources for webhooks"
 "${CMD}" apply $LABEL_SELECTOR_ARG -f _out/webhooks.yaml
 
 if [ "${CI}" != "true" ]; then
-    sed -i 's#quay.io/kubevirt/cluster-network-addons-operator@sha256:4bb9c4701ce989b23fda5a73a05c52be7b196af9cb0183d3705d074f4b63458e#quay.io/oshoval/cluster-network-addons-operator:latest#g' _out/operator.yaml
+    sed -i 's#quay.io/kubevirt/cluster-network-addons-operator@sha256:ce793e227602c3b4f07cbfda07dac6b0a97e49a6011c275bce3bcd5c6a1bd7fc#quay.io/oshoval/cluster-network-addons-operator:latest#g' _out/operator.yaml
 	"${CMD}" apply $LABEL_SELECTOR_ARG -f _out/operator.yaml
 else
 	sed -E 's|^(\s*)- name: KVM_EMULATION$|\1- name: KVM_EMULATION\n\1  value: "true"|' < _out/operator.yaml > _out/operator-ci.yaml
