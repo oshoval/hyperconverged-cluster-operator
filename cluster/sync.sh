@@ -76,9 +76,11 @@ function deploy() {
     HCO_IMAGE="$REGISTRY/$REGISTRY_NAMESPACE/hyperconverged-cluster-operator:latest" WEBHOOK_IMAGE="$REGISTRY/$REGISTRY_NAMESPACE/hyperconverged-cluster-webhook:latest" ./hack/deploy.sh
 }
 
+SKIP=${SKIP:-false}
+
 set_env
-update_manifests
+[ $SKIP == false ] && update_manifests
 cluster_clean
-build
+[ $SKIP == false ] && build
 update_nodes
 deploy
