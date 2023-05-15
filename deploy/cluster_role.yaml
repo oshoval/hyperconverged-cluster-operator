@@ -893,8 +893,6 @@ rules:
   - events
   verbs:
   - update
-  - get
-  - list
 - apiGroups:
   - ""
   resources:
@@ -905,8 +903,6 @@ rules:
   - update
   - list
   - watch
-  - create
-  - patch
 - apiGroups:
   - events.k8s.io
   resources:
@@ -935,31 +931,35 @@ rules:
   resources:
   - configmaps
   verbs:
-  - '*'
+  - get
+  - delete
 - apiGroups:
   - ""
   resources:
   - secrets
   verbs:
-  - get
   - list
   - watch
   - create
   - update
-  - patch
-  - delete
+- apiGroups:
+  - admissionregistration.k8s.io
+  resources:
+  - validatingwebhookconfigurations
+  - mutatingwebhookconfigurations
+  verbs:
+  - list
+  - watch
 - apiGroups:
   - ""
   resources:
   - services
   verbs:
   - get
-  - list
-  - watch
   - create
   - update
-  - patch
-  - delete
+  - list
+  - watch
 - apiGroups:
   - kubevirt.io
   resources:
@@ -968,9 +968,7 @@ rules:
   - get
   - list
   - watch
-  - create
   - update
-  - patch
 - apiGroups:
   - authentication.k8s.io
   resources:
@@ -991,26 +989,6 @@ rules:
   - get
   - create
   - update
-  - patch
-- apiGroups:
-  - admissionregistration.k8s.io
-  resources:
-  - validatingwebhookconfigurations
-  - mutatingwebhookconfigurations
-  verbs:
-  - '*'
-- apiGroups:
-  - ""
-  resources:
-  - namespaces
-  verbs:
-  - get
-- apiGroups:
-  - apiextensions.k8s.io
-  resources:
-  - customresourcedefinitions
-  verbs:
-  - list
 - apiGroups:
   - kubevirt.io
   resources:
