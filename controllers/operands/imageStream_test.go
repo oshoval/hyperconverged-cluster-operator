@@ -63,7 +63,7 @@ var _ = Describe("imageStream tests", func() {
 			Expect(imageStreamNames).To(ContainElement("test-image-stream"))
 
 			req := commontestutils.NewReq(hco)
-			res := handlers[0].ensure(req)
+			res := handlers[0].Ensure(req)
 			Expect(res.Err).ToNot(HaveOccurred())
 			Expect(res.Created).To(BeFalse())
 
@@ -117,7 +117,7 @@ var _ = Describe("imageStream tests", func() {
 			Expect(imageStreamNames).To(ContainElement("test-image-stream"))
 
 			req := commontestutils.NewReq(hco)
-			res := handlers[0].ensure(req)
+			res := handlers[0].Ensure(req)
 			Expect(res.Err).ToNot(HaveOccurred())
 			Expect(res.Created).To(BeFalse())
 
@@ -241,7 +241,7 @@ var _ = Describe("imageStream tests", func() {
 			Expect(imageStreamNames).To(ContainElement("test-image-stream"))
 
 			req := commontestutils.NewReq(hco)
-			res := handlers[0].ensure(req)
+			res := handlers[0].Ensure(req)
 			Expect(res.Err).ToNot(HaveOccurred())
 			Expect(res.Created).To(BeTrue())
 
@@ -287,7 +287,7 @@ var _ = Describe("imageStream tests", func() {
 			hco.Spec.EnableCommonBootImageImport = ptr.To(true)
 			By("apply the ImageStream CRs", func() {
 				req := commontestutils.NewReq(hco)
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Updated).To(BeTrue())
 
@@ -352,7 +352,7 @@ var _ = Describe("imageStream tests", func() {
 
 			By("apply the ImageStream CRs", func() {
 				req := commontestutils.NewReq(hco)
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Updated).To(BeTrue())
 
@@ -425,7 +425,7 @@ var _ = Describe("imageStream tests", func() {
 
 			By("apply the ImageStream CRs", func() {
 				req := commontestutils.NewReq(hco)
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Updated).To(BeTrue())
 
@@ -494,7 +494,7 @@ var _ = Describe("imageStream tests", func() {
 
 			By("apply the ImageStream CRs", func() {
 				req := commontestutils.NewReq(hco)
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Updated).To(BeFalse()) // <=== should not update the imageStream
 
@@ -563,7 +563,7 @@ var _ = Describe("imageStream tests", func() {
 
 			By("apply the ImageStream CRs", func() {
 				req := commontestutils.NewReq(hco)
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Updated).To(BeFalse()) // <=== should not update the imageStream
 
@@ -633,7 +633,7 @@ var _ = Describe("imageStream tests", func() {
 
 			By("apply the ImageStream CRs", func() {
 				req := commontestutils.NewReq(hco)
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Updated).To(BeFalse()) // <=== should not update the imageStream
 
@@ -710,7 +710,7 @@ var _ = Describe("imageStream tests", func() {
 
 			By("apply the ImageStream CRs", func() {
 				req := commontestutils.NewReq(hco)
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
@@ -767,7 +767,7 @@ var _ = Describe("imageStream tests", func() {
 				Expect(imageStreamNames).To(ContainElement("test-image-stream"))
 
 				req := commontestutils.NewReq(hco)
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Created).To(BeTrue())
 
@@ -793,7 +793,7 @@ var _ = Describe("imageStream tests", func() {
 				Expect(imageStreamNames).To(ContainElement("test-image-stream"))
 
 				req := commontestutils.NewReq(hco)
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Created).To(BeTrue())
 
@@ -813,7 +813,7 @@ var _ = Describe("imageStream tests", func() {
 				Expect(objectreferencesv1.SetObjectReference(&hco.Status.RelatedObjects, *ref)).To(Succeed())
 
 				req = commontestutils.NewReq(hco)
-				res = handlers[0].ensure(req)
+				res = handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Created).To(BeTrue())
 
@@ -849,7 +849,7 @@ var _ = Describe("imageStream tests", func() {
 				Expect(imageStreamNames).To(ContainElement("test-image-stream"))
 
 				req := commontestutils.NewReq(hco)
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Created).To(BeTrue())
 
@@ -868,7 +868,7 @@ var _ = Describe("imageStream tests", func() {
 				Expect(objectreferencesv1.SetObjectReference(&hco.Status.RelatedObjects, *ref)).To(Succeed())
 
 				req = commontestutils.NewReq(hco)
-				res = handlers[0].ensure(req)
+				res = handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Created).To(BeTrue())
 
@@ -904,7 +904,7 @@ var _ = Describe("imageStream tests", func() {
 				Expect(imageStreamNames).To(ContainElement("test-image-stream"))
 
 				req := commontestutils.NewReq(hco)
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Created).To(BeTrue())
 
@@ -924,7 +924,7 @@ var _ = Describe("imageStream tests", func() {
 				Expect(objectreferencesv1.SetObjectReference(&hco.Status.RelatedObjects, *ref)).To(Succeed())
 
 				req = commontestutils.NewReq(hco)
-				res = handlers[0].ensure(req)
+				res = handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Created).To(BeTrue())
 

@@ -120,7 +120,7 @@ var _ = Describe("QuickStart tests", func() {
 			hco := commontestutils.NewHco()
 			By("apply the quickstart CRs", func() {
 				req := commontestutils.NewReq(hco)
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Created).To(BeTrue())
 
@@ -148,7 +148,7 @@ var _ = Describe("QuickStart tests", func() {
 			hco := commontestutils.NewHco()
 			By("apply the quickstart CRs", func() {
 				req := commontestutils.NewReq(hco)
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Updated).To(BeTrue())
 
@@ -186,7 +186,7 @@ var _ = Describe("QuickStart tests", func() {
 			req := commontestutils.NewReq(hco)
 
 			By("apply the quickstart CRs", func() {
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Created).To(BeTrue())
 
@@ -216,7 +216,7 @@ var _ = Describe("QuickStart tests", func() {
 
 			By("reconciling quickstart objects", func() {
 				for _, handler := range handlers {
-					res := handler.ensure(req)
+					res := handler.Ensure(req)
 					Expect(res.UpgradeDone).To(BeFalse())
 					Expect(res.Updated).To(BeTrue())
 					Expect(res.Err).ToNot(HaveOccurred())
@@ -250,7 +250,7 @@ var _ = Describe("QuickStart tests", func() {
 			req := commontestutils.NewReq(hco)
 
 			By("apply the quickstart CRs", func() {
-				res := handlers[0].ensure(req)
+				res := handlers[0].Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Created).To(BeTrue())
 
@@ -278,7 +278,7 @@ var _ = Describe("QuickStart tests", func() {
 
 			By("reconciling quickstart objects", func() {
 				for _, handler := range handlers {
-					res := handler.ensure(req)
+					res := handler.Ensure(req)
 					Expect(res.UpgradeDone).To(BeFalse())
 					Expect(res.Updated).To(BeTrue())
 					Expect(res.Err).ToNot(HaveOccurred())

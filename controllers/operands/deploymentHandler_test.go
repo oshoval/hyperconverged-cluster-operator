@@ -51,7 +51,7 @@ var _ = Describe("Deployment Handler", func() {
 
 			// let's ensure the handler properly reconcile it back to the expected state
 			handler := newDeploymentHandler(cl, commontestutils.GetScheme(), NewExpectedDeployment, hco)
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.Updated).To(BeTrue())
 			Expect(res.Err).ToNot(HaveOccurred())
 
@@ -89,7 +89,7 @@ var _ = Describe("Deployment Handler", func() {
 
 			// let's ensure the handler properly reconcile it back to the expected state
 			handler := newDeploymentHandler(cl, commontestutils.GetScheme(), NewExpectedDeployment, hco)
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.Updated).To(BeTrue())
 			Expect(res.Err).ToNot(HaveOccurred())
 
@@ -119,7 +119,7 @@ var _ = Describe("Deployment Handler", func() {
 			cl := commontestutils.InitClient([]client.Object{hco, outdatedResource})
 			handler := newDeploymentHandler(cl, commontestutils.GetScheme(), NewExpectedDeployment, hco)
 
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Updated).To(BeTrue())
 			Expect(res.Err).ToNot(HaveOccurred())
@@ -155,7 +155,7 @@ var _ = Describe("Deployment Handler", func() {
 			cl := commontestutils.InitClient([]client.Object{hco, outdatedResource})
 			handler := newDeploymentHandler(cl, commontestutils.GetScheme(), NewExpectedDeployment, hco)
 
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Updated).To(BeTrue())
 			Expect(res.Err).ToNot(HaveOccurred())

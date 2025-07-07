@@ -171,7 +171,7 @@ var _ = Describe("AAQ tests", func() {
 
 			handler := newAAQHandler(cl, commontestutils.GetScheme())
 
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 
 			Expect(res.Err).ToNot(HaveOccurred())
 			Expect(res.Created).To(BeFalse())
@@ -190,7 +190,7 @@ var _ = Describe("AAQ tests", func() {
 
 			handler := newAAQHandler(cl, commontestutils.GetScheme())
 
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 
 			Expect(res.Err).ToNot(HaveOccurred())
 			Expect(res.Name).To(Equal(aaq.Name))
@@ -209,7 +209,7 @@ var _ = Describe("AAQ tests", func() {
 
 			handler := newAAQHandler(cl, commontestutils.GetScheme())
 
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 
 			Expect(res.Err).ToNot(HaveOccurred())
 			Expect(res.Name).To(Equal("aaq-kubevirt-hyperconverged"))
@@ -250,7 +250,7 @@ var _ = Describe("AAQ tests", func() {
 			cl = commontestutils.InitClient([]client.Object{hco, aaq})
 			handler := newAAQHandler(cl, commontestutils.GetScheme())
 
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 
 			Expect(res.Err).ToNot(HaveOccurred())
 			Expect(res.Created).To(BeFalse())
@@ -294,7 +294,7 @@ var _ = Describe("AAQ tests", func() {
 			cl := commontestutils.InitClient([]client.Object{hco, outdatedResource})
 			handler := newAAQHandler(cl, commontestutils.GetScheme())
 
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Updated).To(BeTrue())
 			Expect(res.Err).ToNot(HaveOccurred())
@@ -325,7 +325,7 @@ var _ = Describe("AAQ tests", func() {
 			cl := commontestutils.InitClient([]client.Object{hco, outdatedResource})
 			handler := newAAQHandler(cl, commontestutils.GetScheme())
 
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Updated).To(BeTrue())
 			Expect(res.Err).ToNot(HaveOccurred())
@@ -358,7 +358,7 @@ var _ = Describe("AAQ tests", func() {
 
 			Expect(hooks.cache).To(BeNil())
 
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.Err).ToNot(HaveOccurred())
 
 			cache := hooks.cache
@@ -369,7 +369,7 @@ var _ = Describe("AAQ tests", func() {
 			By("recreate cache after reset")
 			handler.reset()
 			Expect(hooks.cache).To(BeNil())
-			res = handler.ensure(req)
+			res = handler.Ensure(req)
 			Expect(res.Err).ToNot(HaveOccurred())
 
 			Expect(hooks.cache).ToNot(BeIdenticalTo(cache))

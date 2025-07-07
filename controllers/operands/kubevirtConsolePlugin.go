@@ -533,7 +533,7 @@ type consoleHandler struct {
 	Client client.Client
 }
 
-func (h consoleHandler) ensure(req *common.HcoRequest) *EnsureResult {
+func (h consoleHandler) Ensure(req *common.HcoRequest) *EnsureResult {
 	// Enable console plugin for kubevirt if not already enabled
 	consoleKey := client.ObjectKey{Namespace: hcoutil.UndefinedNamespace, Name: "cluster"}
 	consoleObj := &operatorv1.Console{}

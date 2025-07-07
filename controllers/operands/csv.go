@@ -30,7 +30,7 @@ func newCsvHandler(cli client.Client, ci hcoutil.ClusterInfo) Operand {
 	}
 }
 
-func (c csvHandler) ensure(req *common.HcoRequest) *EnsureResult {
+func (c csvHandler) Ensure(req *common.HcoRequest) *EnsureResult {
 	csv, err := c.getCsv(req)
 	er := NewEnsureResult(csv)
 	if err != nil {

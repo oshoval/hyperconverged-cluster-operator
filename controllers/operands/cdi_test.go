@@ -45,7 +45,7 @@ var _ = Describe("CDI Operand", func() {
 			expectedResource := NewCDIWithNameOnly(hco)
 			cl := commontestutils.InitClient([]client.Object{})
 			handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Err).ToNot(HaveOccurred())
 
@@ -66,7 +66,7 @@ var _ = Describe("CDI Operand", func() {
 			Expect(err).ToNot(HaveOccurred())
 			cl := commontestutils.InitClient([]client.Object{hco, expectedResource})
 			handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Err).ToNot(HaveOccurred())
 
@@ -111,7 +111,7 @@ var _ = Describe("CDI Operand", func() {
 			cl := commontestutils.InitClient([]client.Object{hco, outdatedResource})
 			handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
 
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Updated).To(BeTrue())
 			Expect(res.Err).ToNot(HaveOccurred())
@@ -141,7 +141,7 @@ var _ = Describe("CDI Operand", func() {
 			cl := commontestutils.InitClient([]client.Object{hco, outdatedResource})
 			handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
 
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Updated).To(BeTrue())
 			Expect(res.Err).ToNot(HaveOccurred())
@@ -168,7 +168,7 @@ var _ = Describe("CDI Operand", func() {
 
 			cl := commontestutils.InitClient([]client.Object{hco, missingUSResource})
 			handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Updated).To(BeTrue())
 			Expect(res.Overwritten).To(BeFalse())
@@ -194,7 +194,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -234,7 +234,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -279,7 +279,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -323,7 +323,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeTrue())
@@ -370,7 +370,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -419,7 +419,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -459,7 +459,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -499,7 +499,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -530,7 +530,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingCdi})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -559,7 +559,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingCDI})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -615,7 +615,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -644,7 +644,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingCdi})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -673,7 +673,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingCDI})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -701,7 +701,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -727,7 +727,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingCdi})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -755,7 +755,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingCDI})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeFalse())
@@ -782,7 +782,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 
 				foundCdi := &cdiv1beta1.CDI{}
@@ -804,7 +804,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 
 				foundCdi := &cdiv1beta1.CDI{}
@@ -826,7 +826,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 
 				foundCdi := &cdiv1beta1.CDI{}
@@ -860,7 +860,7 @@ var _ = Describe("CDI Operand", func() {
 
 			cl := commontestutils.InitClient([]client.Object{hco, expectedResource})
 			handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Updated).To(BeTrue())
 			Expect(res.Overwritten).To(BeTrue())
@@ -893,7 +893,7 @@ var _ = Describe("CDI Operand", func() {
 
 			cl := commontestutils.InitClient([]client.Object{hco, expectedResource})
 			handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Updated).To(BeTrue())
 			Expect(res.Overwritten).To(BeTrue())
@@ -916,7 +916,7 @@ var _ = Describe("CDI Operand", func() {
 
 			cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 			handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Updated).To(BeTrue())
@@ -945,7 +945,7 @@ var _ = Describe("CDI Operand", func() {
 
 			cl := commontestutils.InitClient([]client.Object{hco})
 			handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Updated).To(BeFalse())
 			Expect(res.Err).ToNot(HaveOccurred())
@@ -987,7 +987,7 @@ var _ = Describe("CDI Operand", func() {
 
 			cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 			handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Updated).To(BeTrue())
 			Expect(res.Err).ToNot(HaveOccurred())
@@ -1047,7 +1047,7 @@ var _ = Describe("CDI Operand", func() {
 			}
 			cl := commontestutils.InitClient([]client.Object{hco, expectedResource})
 			handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-			res := handler.ensure(req)
+			res := handler.Ensure(req)
 			Expect(res.UpgradeDone).To(BeFalse())
 			Expect(res.Err).ToNot(HaveOccurred())
 
@@ -1140,7 +1140,7 @@ var _ = Describe("CDI Operand", func() {
 				expectedResource := NewCDIWithNameOnly(hco)
 				cl := commontestutils.InitClient([]client.Object{})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Err).ToNot(HaveOccurred())
 
@@ -1172,7 +1172,7 @@ var _ = Describe("CDI Operand", func() {
 				expectedResource := NewCDIWithNameOnly(hco)
 				cl := commontestutils.InitClient([]client.Object{})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.Err).To(HaveOccurred())
 
 				cdi := &cdiv1beta1.CDI{}
@@ -1203,7 +1203,7 @@ var _ = Describe("CDI Operand", func() {
 				cl := commontestutils.InitClient([]client.Object{hco, existsCdi})
 
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.Err).ToNot(HaveOccurred())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.UpgradeDone).To(BeFalse())
@@ -1242,7 +1242,7 @@ var _ = Describe("CDI Operand", func() {
 				cl := commontestutils.InitClient([]client.Object{hco, existsCdi})
 
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.Err).To(HaveOccurred())
 
 				cdi := &cdiv1beta1.CDI{}
@@ -1337,7 +1337,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Err).ToNot(HaveOccurred())
@@ -1367,7 +1367,7 @@ var _ = Describe("CDI Operand", func() {
 
 				cl := commontestutils.InitClient([]client.Object{hco, existingResource})
 				handler := (*genericOperand)(newCdiHandler(cl, commontestutils.GetScheme()))
-				res := handler.ensure(req)
+				res := handler.Ensure(req)
 				Expect(res.UpgradeDone).To(BeFalse())
 				Expect(res.Updated).To(BeTrue())
 				Expect(res.Overwritten).To(BeTrue())

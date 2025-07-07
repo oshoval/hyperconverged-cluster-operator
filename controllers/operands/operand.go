@@ -22,7 +22,7 @@ import (
 )
 
 type Operand interface {
-	ensure(req *common.HcoRequest) *EnsureResult
+	Ensure(req *common.HcoRequest) *EnsureResult
 	reseter
 }
 
@@ -71,7 +71,7 @@ type reseter interface {
 	reset()
 }
 
-func (h *genericOperand) ensure(req *common.HcoRequest) *EnsureResult {
+func (h *genericOperand) Ensure(req *common.HcoRequest) *EnsureResult {
 	cr, err := h.hooks.getFullCr(req.Instance)
 	if err != nil {
 		return &EnsureResult{

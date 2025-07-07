@@ -39,14 +39,14 @@ type imageStreamOperand struct {
 	operand *genericOperand
 }
 
-func (iso imageStreamOperand) ensure(req *common.HcoRequest) *EnsureResult {
+func (iso imageStreamOperand) Ensure(req *common.HcoRequest) *EnsureResult {
 	// if the EnableCommonBootImageImport field is set, make sure the imageStream is in place and up-to-date
 	if req.Instance.Spec.EnableCommonBootImageImport != nil && *req.Instance.Spec.EnableCommonBootImageImport {
 		if result := iso.checkCustomNamespace(req); result != nil {
 			return result
 		}
 
-		return iso.operand.ensure(req)
+		return iso.operand.Ensure(req)
 	}
 
 	// if the FG is not set, make sure the imageStream is not exist

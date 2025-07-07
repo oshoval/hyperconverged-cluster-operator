@@ -169,7 +169,7 @@ func (h *OperandHandler) addOperand(scheme *runtime.Scheme, hc *hcov1beta1.Hyper
 
 func (h *OperandHandler) Ensure(req *common.HcoRequest) error {
 	for _, handler := range h.operands {
-		res := handler.ensure(req)
+		res := handler.Ensure(req)
 		if res.Err != nil {
 			req.Logger.Error(res.Err, "failed to ensure an operand")
 

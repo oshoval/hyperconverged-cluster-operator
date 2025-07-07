@@ -19,9 +19,9 @@ type conditionalHandler struct {
 	getCRWithName func(hc *v1beta1.HyperConverged) client.Object
 }
 
-func (ch *conditionalHandler) ensure(req *common.HcoRequest) *EnsureResult {
+func (ch *conditionalHandler) Ensure(req *common.HcoRequest) *EnsureResult {
 	if ch.shouldDeploy(req.Instance) {
-		return ch.operand.ensure(req)
+		return ch.operand.Ensure(req)
 	}
 	return ch.ensureDeleted(req)
 }
