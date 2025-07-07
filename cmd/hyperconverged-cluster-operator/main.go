@@ -59,6 +59,7 @@ import (
 	"github.com/kubevirt/hyperconverged-cluster-operator/controllers/nodes"
 	"github.com/kubevirt/hyperconverged-cluster-operator/controllers/observability"
 	"github.com/kubevirt/hyperconverged-cluster-operator/controllers/operands"
+	"github.com/kubevirt/hyperconverged-cluster-operator/controllers/operands/passt"
 	"github.com/kubevirt/hyperconverged-cluster-operator/pkg/authorization"
 	"github.com/kubevirt/hyperconverged-cluster-operator/pkg/monitoring/hyperconverged/metrics"
 	"github.com/kubevirt/hyperconverged-cluster-operator/pkg/nodeinfo"
@@ -246,7 +247,7 @@ func main() {
 	err = metrics.SetupMetrics()
 	cmdHelper.ExitOnError(err, "failed to setup metrics: %v")
 
-	err = hcoutil.CheckPasstImagesEnvExists()
+	err = passt.CheckPasstImagesEnvExists()
 	cmdHelper.ExitOnError(err, "failed to retrieve passt env vars")
 
 	logger.Info("Starting the Cmd.")
