@@ -59,6 +59,7 @@ func NewOperandHandler(client client.Client, scheme *runtime.Scheme, ci hcoutil.
 		(*genericOperand)(newCnaHandler(client, scheme)),
 		newAAQHandler(client, scheme),
 		NewServiceAccountHandler(client, scheme, passt.NewPasstBindingCNISA),
+		NewConditionalDaemonSetHandler(client, scheme, ci.IsOpenshift(), passt.NewPasstBindingCNIDaemonSet),
 	}
 
 	if ci.IsOpenshift() {
