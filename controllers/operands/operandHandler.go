@@ -60,6 +60,7 @@ func NewOperandHandler(client client.Client, scheme *runtime.Scheme, ci hcoutil.
 		newAAQHandler(client, scheme),
 		NewServiceAccountHandler(client, scheme, passt.NewPasstBindingCNISA),
 		NewConditionalDaemonSetHandler(client, scheme, ci.IsOpenshift(), passt.NewPasstBindingCNIDaemonSet),
+		NewConditionalNetworkAttachmentDefinitionHandler(client, scheme, passt.NewPasstBindingCNINetworkAttachmentDefinition),
 	}
 
 	if ci.IsOpenshift() {

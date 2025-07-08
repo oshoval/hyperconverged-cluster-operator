@@ -12,6 +12,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 
+	netattdefv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
+
 	kubevirtcorev1 "kubevirt.io/api/core/v1"
 
 	hcov1beta1 "github.com/kubevirt/hyperconverged-cluster-operator/api/v1beta1"
@@ -193,6 +195,28 @@ sleep 2147483647`,
 	}
 
 	return daemonSet
+}
+
+// NewPasstBindingCNINetworkAttachmentDefinition creates a NetworkAttachmentDefinition for the passt binding CNI
+func NewPasstBindingCNINetworkAttachmentDefinition(hc *hcov1beta1.HyperConverged) *netattdefv1.NetworkAttachmentDefinition {
+	return &netattdefv1.NetworkAttachmentDefinition{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      passtNetworkBindingNADName,
+			Namespace: "default",
+			Labels:    hcoutil.GetLabels(hcoutil.HyperConvergedName, hcoutil.AppComponentNetwork),
+		},
+		Spec: netattdefv1.NetworkAttachmentDefinitionSpec{
+			Config: `{
+  "cniVersion": "1.0.0",
+  "name": "primary-udn-kubevirt-binding",
+  "plugins": [
+    {
+      "type": "kubevirt-passt-binding"
+    }
+  ]
+}`,
+		},
+	}
 }
 
 // ImageOnceFn gets the passt image from environment variable
