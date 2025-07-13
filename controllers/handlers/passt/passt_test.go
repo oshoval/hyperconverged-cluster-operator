@@ -2,6 +2,7 @@ package passt_test
 
 import (
 	"context"
+	"maps"
 
 	netattdefv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
 	. "github.com/onsi/ginkgo/v2"
@@ -9,6 +10,7 @@ import (
 	securityv1 "github.com/openshift/api/security/v1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	hcov1beta1 "github.com/kubevirt/hyperconverged-cluster-operator/api/v1beta1"
@@ -216,6 +218,109 @@ var _ = Describe("Passt tests", func() {
 
 			// example of field set by the handler
 			Expect(foundDS.Spec.Template.Spec.PriorityClassName).To(Equal("system-cluster-critical"))
+		})
+	})
+
+	Context("DaemonSet cache", func() {
+		It("should update DaemonSet fields if not matched to the requirements", func() {
+			hco.Annotations[passt.DeployPasstNetworkBindingAnnotation] = "true"
+
+			ds := passt.NewPasstBindingCNIDaemonSet(hco, true)
+			ds.Spec.Template.Spec.PriorityClassName = "wrong-priority-class"
+			ds.Spec.Template.Spec.ServiceAccountName = "wrong-service-account"
+			ds.Spec.Template.Spec.Containers[0].Resources.Requests = corev1.ResourceList{
+				corev1.ResourceCPU:    resource.MustParse("100m"),
+				corev1.ResourceMemory: resource.MustParse("100Mi"),
+			}
+
+			cl = commontestutils.InitClient([]client.Object{hco, ds})
+
+			handler := passt.NewPasstDaemonSetHandler(cl, commontestutils.GetScheme(), true)
+
+			res := handler.Ensure(req)
+
+			Expect(res.Err).ToNot(HaveOccurred())
+			Expect(res.Created).To(BeFalse())
+			Expect(res.Updated).To(BeTrue())
+			Expect(res.Deleted).To(BeFalse())
+
+			foundDS := &appsv1.DaemonSet{}
+			Expect(cl.Get(context.Background(), client.ObjectKey{Name: res.Name, Namespace: hco.Namespace}, foundDS)).To(Succeed())
+
+			Expect(foundDS.Spec.Template.Spec.PriorityClassName).To(Equal("system-cluster-critical"))
+			Expect(foundDS.Spec.Template.Spec.ServiceAccountName).To(Equal("passt-binding-cni"))
+
+			expectedResources := corev1.ResourceRequirements{
+				Requests: corev1.ResourceList{
+					corev1.ResourceCPU:    resource.MustParse("10m"),
+					corev1.ResourceMemory: resource.MustParse("15Mi"),
+				},
+			}
+			Expect(foundDS.Spec.Template.Spec.Containers[0].Resources).To(Equal(expectedResources))
+		})
+
+		It("should reconcile managed labels to default without touching user added ones", func() {
+			const userLabelKey = "userLabelKey"
+			const userLabelValue = "userLabelValue"
+			hco.Annotations[passt.DeployPasstNetworkBindingAnnotation] = "true"
+
+			outdatedResource := passt.NewPasstBindingCNIDaemonSet(hco, true)
+			expectedLabels := maps.Clone(outdatedResource.Labels)
+			for k, v := range expectedLabels {
+				outdatedResource.Labels[k] = "wrong_" + v
+			}
+			outdatedResource.Labels[userLabelKey] = userLabelValue
+
+			cl = commontestutils.InitClient([]client.Object{hco, outdatedResource})
+			handler := passt.NewPasstDaemonSetHandler(cl, commontestutils.GetScheme(), true)
+
+			res := handler.Ensure(req)
+			Expect(res.UpgradeDone).To(BeFalse())
+			Expect(res.Updated).To(BeTrue())
+			Expect(res.Err).ToNot(HaveOccurred())
+
+			foundResource := &appsv1.DaemonSet{}
+			Expect(
+				cl.Get(context.TODO(),
+					client.ObjectKey{Name: outdatedResource.Name, Namespace: outdatedResource.Namespace},
+					foundResource),
+			).ToNot(HaveOccurred())
+
+			for k, v := range expectedLabels {
+				Expect(foundResource.Labels).To(HaveKeyWithValue(k, v))
+			}
+			Expect(foundResource.Labels).To(HaveKeyWithValue(userLabelKey, userLabelValue))
+		})
+
+		It("should reconcile managed labels to default on label deletion without touching user added ones", func() {
+			const userLabelKey = "userLabelKey"
+			const userLabelValue = "userLabelValue"
+			hco.Annotations[passt.DeployPasstNetworkBindingAnnotation] = "true"
+
+			outdatedResource := passt.NewPasstBindingCNIDaemonSet(hco, true)
+			expectedLabels := maps.Clone(outdatedResource.Labels)
+			outdatedResource.Labels[userLabelKey] = userLabelValue
+			delete(outdatedResource.Labels, hcoutil.AppLabelVersion)
+
+			cl = commontestutils.InitClient([]client.Object{hco, outdatedResource})
+			handler := passt.NewPasstDaemonSetHandler(cl, commontestutils.GetScheme(), true)
+
+			res := handler.Ensure(req)
+			Expect(res.UpgradeDone).To(BeFalse())
+			Expect(res.Updated).To(BeTrue())
+			Expect(res.Err).ToNot(HaveOccurred())
+
+			foundResource := &appsv1.DaemonSet{}
+			Expect(
+				cl.Get(context.TODO(),
+					client.ObjectKey{Name: outdatedResource.Name, Namespace: outdatedResource.Namespace},
+					foundResource),
+			).ToNot(HaveOccurred())
+
+			for k, v := range expectedLabels {
+				Expect(foundResource.Labels).To(HaveKeyWithValue(k, v))
+			}
+			Expect(foundResource.Labels).To(HaveKeyWithValue(userLabelKey, userLabelValue))
 		})
 	})
 
