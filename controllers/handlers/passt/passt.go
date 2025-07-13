@@ -289,14 +289,22 @@ func getPodAntiAffinity(componentLabel string, infrastructureHighlyAvailable boo
 	return nil
 }
 
-// NewPasstServiceAccountHandler creates a conditional handler for passt ServiceAccount
-func NewPasstServiceAccountHandler(Client client.Client, Scheme *runtime.Scheme) operands.Operand {
+// createPasstConditionalHandler creates a conditional handler that checks for passt deployment annotation
+func createPasstConditionalHandler(handler *operands.GenericOperand, objectCreator func(hc *hcov1beta1.HyperConverged) client.Object) operands.Operand {
 	return operands.NewConditionalHandler(
-		operands.NewServiceAccountHandler(Client, Scheme, NewPasstBindingCNISA),
+		handler,
 		func(hc *hcov1beta1.HyperConverged) bool {
 			value, ok := hc.Annotations[DeployPasstNetworkBindingAnnotation]
 			return ok && value == "true"
 		},
+		objectCreator,
+	)
+}
+
+// NewPasstServiceAccountHandler creates a conditional handler for passt ServiceAccount
+func NewPasstServiceAccountHandler(Client client.Client, Scheme *runtime.Scheme) operands.Operand {
+	return createPasstConditionalHandler(
+		operands.NewServiceAccountHandler(Client, Scheme, NewPasstBindingCNISA),
 		func(hc *hcov1beta1.HyperConverged) client.Object {
 			return NewPasstBindingCNISA(hc)
 		},
@@ -305,12 +313,8 @@ func NewPasstServiceAccountHandler(Client client.Client, Scheme *runtime.Scheme)
 
 // NewPasstDaemonSetHandler creates a conditional handler for passt DaemonSet
 func NewPasstDaemonSetHandler(Client client.Client, Scheme *runtime.Scheme, isOpenShift bool) operands.Operand {
-	return operands.NewConditionalHandler(
+	return createPasstConditionalHandler(
 		operands.NewDaemonSetHandler(Client, Scheme, isOpenShift, NewPasstBindingCNIDaemonSet),
-		func(hc *hcov1beta1.HyperConverged) bool {
-			value, ok := hc.Annotations[DeployPasstNetworkBindingAnnotation]
-			return ok && value == "true"
-		},
 		func(hc *hcov1beta1.HyperConverged) client.Object {
 			return NewPasstBindingCNIDaemonSet(hc, isOpenShift)
 		},
@@ -319,12 +323,8 @@ func NewPasstDaemonSetHandler(Client client.Client, Scheme *runtime.Scheme, isOp
 
 // NewPasstNetworkAttachmentDefinitionHandler creates a conditional handler for passt NetworkAttachmentDefinition
 func NewPasstNetworkAttachmentDefinitionHandler(Client client.Client, Scheme *runtime.Scheme) operands.Operand {
-	return operands.NewConditionalHandler(
+	return createPasstConditionalHandler(
 		operands.NewNetworkAttachmentDefinitionHandler(Client, Scheme, NewPasstBindingCNINetworkAttachmentDefinition),
-		func(hc *hcov1beta1.HyperConverged) bool {
-			value, ok := hc.Annotations[DeployPasstNetworkBindingAnnotation]
-			return ok && value == "true"
-		},
 		func(hc *hcov1beta1.HyperConverged) client.Object {
 			return NewPasstBindingCNINetworkAttachmentDefinition(hc)
 		},
@@ -333,12 +333,8 @@ func NewPasstNetworkAttachmentDefinitionHandler(Client client.Client, Scheme *ru
 
 // NewPasstSecurityContextConstraintsHandler creates a conditional handler for passt SecurityContextConstraints
 func NewPasstSecurityContextConstraintsHandler(Client client.Client, Scheme *runtime.Scheme) operands.Operand {
-	return operands.NewConditionalHandler(
+	return createPasstConditionalHandler(
 		operands.NewSecurityContextConstraintsHandler(Client, Scheme, NewPasstBindingCNISecurityContextConstraints),
-		func(hc *hcov1beta1.HyperConverged) bool {
-			value, ok := hc.Annotations[DeployPasstNetworkBindingAnnotation]
-			return ok && value == "true"
-		},
 		func(hc *hcov1beta1.HyperConverged) client.Object {
 			return NewPasstBindingCNISecurityContextConstraints(hc)
 		},
